@@ -1,33 +1,36 @@
 #include <iostream>
-#include <chrono>
+#include <cstring>
 
-using namespace std;
+char* combine_half_cpp(const char* str1, const char* str2) {
+    int len1 = strlen(str1);
+    int len2 = strlen(str2);
+    int half_len1 = len1 / 2;
+    int half_len2 = len2 / 2;
 
-extern "C" char* combine_half_asm(const char* str1, const char* str2);
-char* combine_half_cpp(const char* str1, const char* str2);
+    // Выделяем память для новой строки
+    char* result = new char[half_len1 + half_len2 + 1];
+
+    // Копируем первую половину первой строки
+    strncpy(result, str1, half_len1);
+    // Копируем первую половину второй строки
+    strncpy(result + half_len1, str2, half_len2);
+    
+    // Завершаем строку нулевым байтом
+    result[half_len1 + half_len2] = '0'; 
+
+    return result;
+}
 
 int main() {
     const char* str1 = "HelloWorld";
-    const char* str2 = "GoodbyeEveryone";
+    const char* str2 = "Goodbye";
 
-    auto start = chrono::high_resolution_clock::now();
-    char* result_asm = combine_half_asm(str1, str2);
-    auto end = chrono::high_resolution_clock::now();
-    chrono::duration<double> duration_asm = end - start;
+    char* result = combine_half_cpp(str1, str2);
+    
+    std::cout << "Результат: " << result << std::endl;
 
-    cout << "Результат (ASM): " << result_asm << std::endl;
-    cout << "Время выполнения ASM: " << duration_asm.count() << " секунд" << std::endl;
-
-    start = std::chrono::high_resolution_clock::now();
-    char* result_cpp = combine_half_cpp(str1, str2);
-    end = std::chrono::high_resolution_clock::now();
-    std::chrono::duration<double> duration_cpp = end - start;
-
-    std::cout << "Результат (C++): " << result_cpp << std::endl;
-    std::cout << "Время выполнения C++: " << duration_cpp.count() << " секунд" << std::endl;
-
-    delete[] result_asm; // Освобождаем память
-    delete[] result_cpp; // Освобождаем память
+    // Освобождаем выделенную память
+    delete[] result; 
 
     return 0;
 }

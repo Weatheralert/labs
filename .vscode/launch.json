@@ -9,7 +9,7 @@
       "stopAtEntry": false,
       "externalConsole": false,
       "cwd": "/home/fialochka5/sem2/ksis/lab1",
-      "program": "/home/fialochka5/sem2/ksis/lab1/build/Debug/outDebug",
+      "program": "/home/fialochka5/sem2/ksis/lab1/a.out",
       "MIMode": "gdb",
       "miDebuggerPath": "gdb",
       "setupCommands": [
